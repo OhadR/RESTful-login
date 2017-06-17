@@ -41,9 +41,9 @@ public class TokenRepositoryJdbc implements TokenRepository, InitializingBean
 				new Object[] {
 					username,
 					accessToken,
-					expirationDate, 
+					new java.sql.Date(expirationDate.getTime()), 
 					refreshToken},
-				new int[] { Types.VARCHAR, Types.VARCHAR, Types.DATE, Types.VARCHAR });
+				new int[] { Types.VARCHAR, Types.VARCHAR, Types.TIMESTAMP, Types.VARCHAR });
 
 		if(rowsUpdated != 1)
 		{
