@@ -29,22 +29,13 @@
     </bean>
 
 
+    <!-- data-source -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://${MARS_DB_HOST}:3306/${MARS_DB_NAME}?allowMultiQueries=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="${MARS_DB_USER}" />		<!-- OhadDB -->
+		<property name="password" value="${MARS_DB_PASSWORD}" />	<!-- ohad0921 -->
 	</bean>
-
-    <!-- data-source - ->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-        <property name="driverClass" value="com.jamonapi.proxy.JAMonDriver"/>
-        <property name="jdbcUrl"
-                  value="jdbc:jamon:mysql://${com.ohadr.oauth2.db.host}:${com.ohadr.oauth2.db.port}/${com.ohadr.oauth2.db.schema}?jamonrealdriver=org.gjt.mm.mysql.Driver;useUnicode=true&amp;characterEncoding=utf-8"/>
-        <property name="user" value="${com.ohadr.oauth2.db.username}"/>
-        <property name="password" value="${com.ohadr.oauth2.db.password}"/>
-        <property name="acquireIncrement" value="1"/>
-        <property name="idleConnectionTestPeriod" value="100"/>
-        <property name="maxPoolSize" value="10"/>
-        <property name="maxStatements" value="5"/>
-        <property name="minPoolSize" value="5"/>
-    </bean>
--->
 
 </beans>
