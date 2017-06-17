@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.ohadr.crypto.service.CryptoService;
+import com.ohadr.rest_login.config.AppProperties;
 import com.ohadr.rest_login.repository.TokenRepository;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.ws.rs.Consumes;
@@ -21,10 +23,13 @@ import javax.ws.rs.core.Response;
 public class LoginController
 {
 	@Autowired
-	private CryptoService	cryptoService;
+	private CryptoService			cryptoService;
 
 	@Autowired
-	TokenRepository			tokenRepo;
+	private AppProperties			properties;
+	
+	@Autowired
+	private TokenRepository			tokenRepo;
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -41,12 +46,15 @@ public class LoginController
 //			return Response.status( Response.Status.UNAUTHORIZED ).entity("moshe moshe").build();		
 //		}
 		
-		Object email = "ohad is the man!";
 		//token contains:
 		//1. expiry
 		//2. authorization
-		Date expirationDate = new Date();
-		String encodedString = cryptoService.createEncodedContent(expirationDate, email);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MINUTE, properties.getAccessTokenExpirationMinutes());
+	    Date expirationDate = calendar.getTime();
+
+		String encodedString = cryptoService.createEncodedContent(expirationDate, username);
 		String refreshToken = null;
 		tokenRepo.storeAccessToken(username, encodedString, expirationDate, refreshToken);
 		return Response.ok().entity( encodedString ).build();	
