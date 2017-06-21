@@ -82,7 +82,7 @@ public class TokenRepositoryJdbc implements TokenRepository, InitializingBean
 		{
 			log.info("no record was found for user=" + username);
 		}
-		
+	
 		return userFromDB;
 	}
 
@@ -93,8 +93,8 @@ public class TokenRepositoryJdbc implements TokenRepository, InitializingBean
 		{
 			UserLoginDetails user = new UserLoginDetailsImpl(
 					rs.getString(1),		//username / email
-					rs.getString(2),		//password
-					rs.getDate(3),		//activated?
+					rs.getString(2),		//access-token
+					rs.getDate(3),			//exp.date
 					rs.getString(4)			//attempts left
 					);
 			
@@ -109,7 +109,7 @@ public class TokenRepositoryJdbc implements TokenRepository, InitializingBean
 		log.info("updating entry for user " + username);
 		int count = jdbcTemplate.update(UPDATE_ACCESS_TOKEN_STATEMENT, 
 				newAccessToken,
-				new java.sql.Date(newExpirationDate.getTime()), 
+				new java.sql.Timestamp(newExpirationDate.getTime()), 		// https://stackoverflow.com/a/2400992/421642
 				username);
 		if (count != 1)
 		{
