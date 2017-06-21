@@ -29,7 +29,7 @@ the server.
 the class `TokenGenerator` uses `java.security.SecureRandom` to generate a `BigInteger` token.
 
 
-** Database **
+**Database**
 
 in this application, unlike all other examples, i chose NOT TO use DB-connection pool. So the data-source is a SimpleDriverDataSource.
 (properties such as MARS_DB_PASSWORD are read from environment-variables)
