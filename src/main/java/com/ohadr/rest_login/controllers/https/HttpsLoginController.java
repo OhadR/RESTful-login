@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import com.ohadr.rest_login.config.AppProperties;
 import com.ohadr.rest_login.core.TokenGenerator;
 import com.ohadr.rest_login.repository.TokenRepository;
+import com.ohadr.rest_login.repository.UserLoginDetails;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -22,9 +23,6 @@ import javax.ws.rs.core.Response;
 @Path("/login")
 public class HttpsLoginController
 {
-//	@Autowired
-//	private CryptoService			cryptoService;
-//
 	@Autowired
 	private AppProperties			properties;
 	
@@ -59,7 +57,16 @@ public class HttpsLoginController
 
 //		String encodedString = cryptoService.createEncodedContent(expirationDate, username);
 		String refreshToken = null;
-		tokenRepo.storeAccessToken(username, token, expirationDate, refreshToken);
+		UserLoginDetails uld = tokenRepo.loadUserLoginDetailsByUsername(username);
+		if(uld != null)
+		{
+			//update
+			tokenRepo.updateAccessToken(username, token, expirationDate);
+		}
+		else
+		{
+			tokenRepo.storeAccessToken(username, token, expirationDate, refreshToken);
+		}
 		return Response.ok().entity( token ).build();	
 	}
 }
