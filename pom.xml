@@ -8,7 +8,7 @@
 
 
   <properties>
-        <ohadr.spring.version>4.2.3.RELEASE</ohadr.spring.version>
+        <ohadr.spring.version>5.3.19</ohadr.spring.version>
   </properties>
 
 	<dependencies>
